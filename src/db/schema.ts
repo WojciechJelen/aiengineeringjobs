@@ -6,6 +6,8 @@ import {
   integer,
   boolean,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export const job = pgTable("job", {
   id: serial("id").primaryKey(),
@@ -31,3 +33,10 @@ export const job = pgTable("job", {
   contactEmail: text("contact_email"),
   isActive: boolean("is_active").default(true).notNull(),
 });
+
+export const insertJobSchema = createInsertSchema(job, {
+  tags: z.array(z.string()),
+  requiredSkills: z.array(z.string()),
+  preferredSkills: z.array(z.string()),
+});
+export const selectJobSchema = createSelectSchema(job);
