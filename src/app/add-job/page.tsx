@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>add</div>;
+import AddJobPage from "@/components/add-job/add-job";
+
+export default function AddJobPageWrapper() {
+  return <AddJobPage />;
 }

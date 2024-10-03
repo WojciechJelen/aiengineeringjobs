@@ -1,15 +1,11 @@
-"use client";
+import { getJobs } from "@/lib/actions/job-actions";
 
-import { trpc } from "@/app/_trpc/client";
-
-export function JobBoard() {
-  const jobs = trpc.getJobs.useQuery();
-
-  if (!jobs.data) return <div>Loading...</div>;
+export async function JobBoard() {
+  const jobs = await getJobs();
 
   return (
     <div>
-      {jobs.data.map((job) => (
+      {jobs.map((job) => (
         <div key={job.id}>{job.title}</div>
       ))}
     </div>
