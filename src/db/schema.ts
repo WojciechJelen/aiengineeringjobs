@@ -35,8 +35,37 @@ export const job = pgTable("job", {
 });
 
 export const insertJobSchema = createInsertSchema(job, {
-  tags: z.array(z.string()),
-  requiredSkills: z.array(z.string()),
-  preferredSkills: z.array(z.string()),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title must be 100 characters or less"),
+  description: z.string().min(1, "Description is required"),
+  company: z.string().min(1, "Company name is required"),
+  companyWebsite: z.string().url("Must be a valid URL").optional(),
+  location: z.string().min(1, "Location is required"),
+  salaryMin: z
+    .number()
+    .int("Must be an integer")
+    .positive("Must be a positive number")
+    .optional(),
+  salaryMax: z
+    .number()
+    .int("Must be an integer")
+    .positive("Must be a positive number")
+    .optional(),
+  currency: z.string().optional(),
+  jobType: z.string().min(1, "Job type is required"),
+  experienceLevel: z.string().min(1, "Experience level is required"),
+  educationLevel: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  requiredSkills: z
+    .array(z.string())
+    .min(1, "At least one required skill is needed"),
+  preferredSkills: z.array(z.string()).optional(),
+  applicationUrl: z.string().url("Must be a valid URL").optional(),
+  contactEmail: z.string().email("Must be a valid email address").optional(),
 });
+
 export const selectJobSchema = createSelectSchema(job);
+
+export type JobType = typeof job.$inferSelect;
